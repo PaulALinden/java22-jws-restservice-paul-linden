@@ -1,9 +1,17 @@
 package com.example.restservice.repository;
 
 import com.example.restservice.model.Content;
+import com.example.restservice.model.JsonManager;
 import jakarta.annotation.PostConstruct;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +24,6 @@ public class ContentCollectionRepo {
     public ContentCollectionRepo(){}
 
     public List<Content> findAll(){
-
         return contentList;
     }
 
@@ -25,9 +32,18 @@ public class ContentCollectionRepo {
     }
 
     @PostConstruct
-    private void init(){ // add content to list
-        Content c = new Content(1, "Paul");
-        contentList.add(c);
+    private void init() throws IOException, ParseException { // add content to list
+        JsonManager jsonManager = new JsonManager();
+        jsonManager.addJson();
+
+        for (int i = 0; i <jsonManager.getIdList().size(); i++) {
+            int a = jsonManager.getIdList().get(i);
+            String b = jsonManager.getContentList().get(i);
+
+            Content c = new Content(a, b);
+            contentList.add(c);
+        }
+
     }
 
     public void save(Content content){
