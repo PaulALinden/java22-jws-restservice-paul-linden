@@ -3,14 +3,9 @@ package com.example.restservice.repository;
 import com.example.restservice.model.Content;
 import com.example.restservice.model.JsonManager;
 import jakarta.annotation.PostConstruct;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +19,7 @@ public class ContentCollectionRepo {
     public ContentCollectionRepo(){}
 
     public List<Content> findAll(){
+
         return contentList;
     }
 
@@ -52,7 +48,7 @@ public class ContentCollectionRepo {
     }
 
     public boolean existsById(Integer id) {
-        return contentList.stream().filter(c -> Objects.equals(c.id(), id)).count() == 1;
+        return contentList.stream().anyMatch(c -> Objects.equals(c.id(), id));
     }
 
     public void delete(Integer id) {
