@@ -1,2 +1,2 @@
 # java22-jws-restservice-paul-linden
-simpel REst-api
+simple REst-api
