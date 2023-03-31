@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /* This is a repository class for managing the collection of Content objects.
 It contains methods for finding, saving, deleting, and checking if a Content object exists by its id.
@@ -24,7 +24,7 @@ The repository is annotated with @Repository, indicating that it is a Spring-man
 
 @Repository
 public class ContentCollectionRepo {
-    private final List<Content> contentList = new ArrayList<>();
+    private final List<Content> contentList = new CopyOnWriteArrayList<>();
 
     public ContentCollectionRepo(){}
 
@@ -50,6 +50,7 @@ public class ContentCollectionRepo {
     }
 
     public void save(Content content) throws IOException {
+
         contentList.removeIf(c -> c.id().equals(content.id()));
         contentList.add(content);
 
@@ -60,6 +61,7 @@ public class ContentCollectionRepo {
             jsonObject.put("id", c.id());
             jsonObject.put("content", c.content());
             jsonArray.add(jsonObject);
+            System.out.println(jsonArray);
         }
         FileWriter fileWriter = new FileWriter("rest-service/src/main/java/com/example/restservice/data/data.json");
         fileWriter.write(jsonArray.toJSONString());
@@ -82,11 +84,11 @@ public class ContentCollectionRepo {
             jsonObject.put("id", c.id());
             jsonObject.put("content", c.content());
             jsonArray.add(jsonObject);
+            System.out.println(jsonArray);
         }
         FileWriter fileWriter = new FileWriter("rest-service/src/main/java/com/example/restservice/data/data.json");
         fileWriter.write(jsonArray.toJSONString());
         fileWriter.flush();
         fileWriter.close();
     }
-
 }
